@@ -3,9 +3,7 @@ import styled from 'styled-components'
 const Search = styled.input`
   padding: 1rem 2rem;
   font-size: 14px;
-  margin: 2rem auto;
   width: calc(100% - 4rem);
-  max-width: 600px;
   display: block;
   border: none;
   border-radius: 8px;
@@ -18,8 +16,6 @@ const Search = styled.input`
 `
 export const SearchWrapper = styled.div`
   position: relative;
-  max-width: 650px;
-  margin: 0 auto;
   .fas,
   .far {
     position: absolute;

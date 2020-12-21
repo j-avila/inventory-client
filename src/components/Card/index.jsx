@@ -9,8 +9,10 @@ const Card = (props) => {
   const [discount, setDiscount] = useState(false)
 
   useEffect(() => {
-    if (palindrome(brand) || palindrome(name) || palindrome(description)) {
-      setDiscount(true)
+    if (brand) {
+      if (palindrome(brand) || palindrome(name) || palindrome(description)) {
+        setDiscount(true)
+      }
     }
   }, [])
 

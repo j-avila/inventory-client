@@ -29,3 +29,28 @@ export const Wrapper = styled.div`
     }
   }
 `
+
+export const Button = styled.button`
+  dispaly: block;
+  padding: 1rem 1rem;
+  background: #582a7a;
+  color: white;
+  border: 0;
+  outline: 0;
+  border-radius: 8px;
+  transition: 0.5s ease all;
+  max-width: max-content;
+  &:hover {
+    cursor: pointer;
+    transition: 0.5s ease all;
+    background: #321846;
+  }
+`
+
+export const ToolBar = styled.div`
+  margin: 1rem auto;
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: 2fr 8fr;
+  align-items: center;
+`
