@@ -1,41 +1,35 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Wrapper, Form, InputHolder } from './styles'
 
 const ProductForm = (props) => {
-  const [formData, setFormData] = useState({})
+  const [thumbnail, setThumbnail] = useState({})
+  const form = useRef(null)
 
   const handleImg = (file) => {
     if (file === 'reset') {
-      setFormData({
-        ...formData,
-        image: '',
+      setThumbnail({
         thumbnail: ''
       })
     } else {
-      const { value, id, files } = file.target
-      setFormData({
-        ...formData,
-        [id]: files[0],
+      const { files } = file.target
+      setThumbnail({
         thumbnail: URL.createObjectURL(files[0])
       })
+      console.log(files[0])
     }
   }
 
-  const handleChange = (e) => {
-    const { value, id } = e.target
-    setFormData({
-      ...formData,
-      [id]: value
-    })
-  }
+  const saveForm = (e) => {
+    e.preventDefault()
+    console.log(form.current)
+    let formdata = new FormData(form.current)
 
-  const saveForm = () => {
     fetch(`http://localhost:3000/products`, {
       method: 'POST',
-      body: JSON.stringify(formData),
+      body: formdata,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         mode: 'cors'
       }
     }).then((res) => {
@@ -46,18 +40,18 @@ const ProductForm = (props) => {
   return (
     <Wrapper>
       <strong>Agregar nuevo producto</strong>
-      <Form>
+      <Form ref={form} enctype="multipart/form-data" onSubmit={saveForm}>
         <InputHolder>
           <label>imagen del producto</label>
           <div className="file-input">
             <span className="thumb">
-              {formData.thumbnail ? (
+              {thumbnail.thumbnail ? (
                 <>
                   <i
                     className="fas fa-times-circle"
                     onClick={(e) => handleImg('reset')}
                   ></i>
-                  <img src={formData.thumbnail} alt="thumb" />
+                  <img src={thumbnail.thumbnail} alt="thumb" />
                 </>
               ) : (
                 <img
@@ -69,6 +63,7 @@ const ProductForm = (props) => {
             <input
               type="file"
               id="image"
+              name="image"
               onChange={(e) => handleImg(e)}
               placeholder="imagen"
             />
@@ -79,25 +74,20 @@ const ProductForm = (props) => {
           <input
             type="text"
             id="name"
-            onChange={(e) => handleChange(e)}
+            name="name"
             placeholder="ejem: polera azul"
           />
         </InputHolder>
         <InputHolder>
           <label>marca</label>
-          <input
-            type="text"
-            id="brand"
-            onChange={(e) => handleChange(e)}
-            placeholder="ejem: nike"
-          />
+          <input type="text" id="brand" name="brand" placeholder="ejem: nike" />
         </InputHolder>
         <InputHolder>
           <label>categoría del producto</label>
           <input
             type="text"
             id="category"
-            onChange={(e) => handleChange(e)}
+            name="category"
             placeholder="ejem: ropa de hombre"
           />
         </InputHolder>
@@ -106,8 +96,8 @@ const ProductForm = (props) => {
           <input
             type="number"
             min="0"
+            name="uniPrice"
             id="price"
-            onChange={(e) => handleChange(e)}
             placeholder="999"
           />
         </InputHolder>
@@ -117,10 +107,11 @@ const ProductForm = (props) => {
             id="desc"
             cols="30"
             rows="10"
+            name="description"
             placeholder="ejem: polera azul sin mangas"
           ></textarea>
         </InputHolder>
-        <button onClick={() => saveForm()}>enviar</button>
+        <button type="submit">enviar</button>
       </Form>
     </Wrapper>
   )

@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   background: #dcd7d7;
   border-radius: 8px;
 `
-export const Form = styled.div`
+export const Form = styled.form`
   display: grid;
 `
 export const InputHolder = styled.div`
